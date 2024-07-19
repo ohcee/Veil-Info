@@ -20,6 +20,14 @@
 
 ### `sudo npm upgrade`
 
+### ```npm install react-scripts@latest
+npm install @babel/plugin-transform-nullish-coalescing-operator@latest
+npm install @babel/plugin-transform-private-methods@latest
+npm install @babel/plugin-transform-class-properties@latest
+npm install @babel/plugin-transform-numeric-separator@latest
+npm install @babel/plugin-transform-optional-chaining@latest
+npm install @babel/plugin-transform-private-property-in-object@latest```
+
 ### After these are installed inside the veil-info 
 ### root folder, run the following:
 
