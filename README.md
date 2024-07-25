@@ -1,24 +1,24 @@
 # Veil-Info
 
-
-<p>This is a Easy to use Veil-Info app. It gathers blockchain, market, and Veil news. </p>
-<p>It displays current block, difficulty of all algos, exchange rate, lists the most active exchanges, team budgets, and many clickable quick links.</p>
+<p>The Veil-Info app is an easy-to-use tool that provides up-to-date information on the Veil blockchain, market trends, and news.</p>
+<p>It displays the current block, difficulty levels for all algorithms, exchange rates, the most active exchanges, team budgets, and includes many clickable quick links.</p>
 <p>This uses a proxy to make calls to the Veil explorer every 15 seconds and displays the information.</p>
 
 #### `git clone https://github.com/ohcee/veil-info.git`
 
-### You will need Nodejs and NPM.
+### You will need Node.js and npm.
 
+#### On Ubuntu:
 #### `sudo apt install nodejs`
 #### `sudo apt install npm`
 
-### You also need react-scripts
+#### On macOS:
+#### You can use Homebrew to install Node.js and npm:
+#### `brew install node`
 
-### After you install NPM install react-scripts with npm.
+### You also need react-scripts and several Babel plugins.
 
-### `npm i react-scripts`
-
-### `sudo npm upgrade`
+### After you install npm, install react-scripts and the plugins:
 
 ### `npm install react-scripts@latest`
 `npm install @babel/plugin-transform-nullish-coalescing-operator@latest`
@@ -28,18 +28,18 @@
 `npm install @babel/plugin-transform-optional-chaining@latest`
 `npm install @babel/plugin-transform-private-property-in-object@latest`
 
-### After these are installed inside the veil-info 
+### After these are installed, inside the `veil-info` 
 ### root folder, run the following:
 
 #### `cd veil-info`
 
 #### `cd Java` 
 
-### Then once inside the Java folder.
+### Then once inside the Java folder:
 
 #### `node server.js`
 
-## This should start the proxy. It will continue to run make rpc calls and restart every 30 mins. 
+## This should start the proxy. It will continue to make RPC calls and restart every 30 mins.
 
 ## Open another terminal window and enter the following:
 
@@ -47,9 +47,10 @@
 
 #### `cd src`
 
-## Once inside the src folder: 
+## Once inside the src folder:
 
 #### `npm start`
+
 # Dark mode:
 ![Screenshot 2023-12-30 at 5 55 35 AM](https://github.com/ohcee/veil-info/assets/46406370/4a5706ae-3f00-41de-944a-8d433a675963)
 ![Screenshot 2023-12-30 at 5 56 34 AM](https://github.com/ohcee/veil-info/assets/46406370/f1ef496f-2caf-428a-90e2-db3799f7c100)
