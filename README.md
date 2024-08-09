@@ -30,15 +30,13 @@
 ### After these are installed, inside the `veil-info` 
 ### root folder, run the following:
 
-#### `cd veil-info`
-
 #### `cd Java` 
 
 ### Then once inside the Java folder:
 
 #### `node server.js`
 
-## This should start the proxy. It will continue to make RPC calls and restart every 30 mins.
+## This should start the proxy. It will continue to make RPC calls until an error then restart.
 
 ## Open another terminal window and enter the following:
 
