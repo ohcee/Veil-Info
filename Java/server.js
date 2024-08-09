@@ -2,6 +2,7 @@ const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const cors = require('cors');
 const http = require('http');
+const WebSocket = require('ws');
 
 const app = express();
 let errorOccurred = false; // Flag to track if an error occurred
@@ -9,10 +10,24 @@ let errorOccurred = false; // Flag to track if an error occurred
 // Enable CORS for all routes
 app.use(cors());
 
+// Create an HTTP server and WebSocket server
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+// Function to broadcast messages to all connected clients
+function broadcastMessage(message) {
+  wss.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
+    }
+  });
+}
+
 // Middleware to handle errors
 function handleErrors(err, req, res, next) {
   if (err) {
     errorOccurred = true; // Set error flag
+    broadcastMessage('error'); // Notify clients about the error
     if (err.response) {
       if (err.response.status === 429) {
         res.status(429).send('Rate limit exceeded. Please try again later.');
@@ -45,6 +60,10 @@ app.use('/api', createProxyMiddleware({
   changeOrigin: true,
   timeout: 15000, // set timeout to 15 seconds 
   onProxyRes: (proxyRes, req, res) => {
+    if (errorOccurred) {
+      broadcastMessage('recovered'); // Notify clients about the recovery
+      errorOccurred = false;
+    }
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -99,7 +118,6 @@ app.use((req, res, next) => {
 });
 
 // Configure the HTTP server with maxHeadersCount
-const server = http.createServer(app);
 server.maxHeadersCount = 0; // Set maxHeadersCount to 0 to disable the limit
 
 // Function to restart the server
@@ -109,6 +127,7 @@ const restartServer = () => {
     server.close(() => {
       server.listen(3001, () => {
         console.log('Proxy server restarted successfully');
+        broadcastMessage('recovered'); // Notify clients about the recovery
         errorOccurred = false; // Reset error flag
       });
     });
