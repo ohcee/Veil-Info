@@ -34,7 +34,7 @@
 
 ### Then once inside the Java folder:
 
-#### `node server.js`
+### `node server.js`
 
 ## This should start the proxy. It will continue to make RPC calls until an error then restart.
 
@@ -42,11 +42,11 @@
 
 ### `cd veil-info`
 
-#### `cd src`
+### `cd src`
 
 ## Once inside the src folder:
 
-#### `npm start`
+### `npm start`
 
 # Dark mode:
 ![Screenshot 2023-12-30 at 5 55 35 AM](https://github.com/ohcee/veil-info/assets/46406370/4a5706ae-3f00-41de-944a-8d433a675963)
