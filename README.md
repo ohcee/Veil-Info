@@ -14,11 +14,9 @@
 
 #### On macOS:
 #### You can use Homebrew to install Node.js and npm:
-#### `brew install node`
+#### `brew install nodejs`
 
-### You also need react-scripts and several Babel plugins.
-
-### After you install npm, install react-scripts and the plugins:
+### After you install npm, install and upgrade
 
 ### `npm install`
 
