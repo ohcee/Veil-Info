@@ -4,17 +4,17 @@
 <p>It displays the current block, difficulty levels for all algorithms, exchange rates, the most active exchanges, team budgets, and includes many clickable quick links.</p>
 <p>This uses a proxy to make calls to the Veil explorer every 15 seconds and displays the information.</p>
 
-#### `git clone https://github.com/ohcee/veil-info.git`
+### `git clone https://github.com/ohcee/veil-info.git`
 
 ### You will need Node.js and npm.
 
-#### On Ubuntu:
-#### `sudo apt install nodejs`
-#### `sudo apt install npm`
+### On Ubuntu:
+### `sudo apt install nodejs`
+### `sudo apt install npm`
 
 #### On macOS:
 #### You can use Homebrew to install Node.js and npm:
-#### `brew install nodejs`
+### `brew install nodejs`
 
 ### After you install npm, install and upgrade
 
@@ -30,7 +30,7 @@
 ### After these are installed, inside the `veil-info` 
 ### root folder, run the following:
 
-#### `cd Java` 
+### `cd Java` 
 
 ### Then once inside the Java folder:
 
