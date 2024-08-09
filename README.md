@@ -20,6 +20,8 @@
 
 ### `npm install`
 
+### `npm install ws`
+
 ### `npm upgrade`
 
 ### `npm install @testing-library/jest-dom@latest`
