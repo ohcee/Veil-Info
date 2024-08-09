@@ -20,9 +20,14 @@
 
 ### After you install npm, install react-scripts and the plugins:
 
+### `npm install`
+
 ### `npm upgrade`
 
-### `npm install`
+### `npm install @testing-library/jest-dom@latest`
+### `npm install @testing-library/react@latest` 
+### `npm install @testing-library/user-event@latest`
+### `npm install web-vitals@latest`
 
 ### After these are installed, inside the `veil-info` 
 ### root folder, run the following:
