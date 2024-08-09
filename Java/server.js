@@ -1,11 +1,33 @@
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const cors = require('cors');
+const http = require('http');
 
 const app = express();
+let errorOccurred = false; // Flag to track if an error occurred
 
 // Enable CORS for all routes
 app.use(cors());
+
+// Middleware to handle errors
+function handleErrors(err, req, res, next) {
+  if (err) {
+    errorOccurred = true; // Set error flag
+    if (err.response) {
+      if (err.response.status === 429) {
+        res.status(429).send('Rate limit exceeded. Please try again later.');
+      } else if (err.response.status === 404) {
+        res.status(404).send('Resource not found.');
+      } else {
+        res.status(err.response.status).send(err.response.statusText);
+      }
+    } else {
+      res.status(500).send('Internal server error.');
+    }
+  } else {
+    next();
+  }
+}
 
 // Proxy configuration for nonkyc-veil-xmr
 app.use('/nonkyc-veil-xmr', createProxyMiddleware({
@@ -13,7 +35,8 @@ app.use('/nonkyc-veil-xmr', createProxyMiddleware({
   changeOrigin: true,
   pathRewrite: {
     '^/nonkyc-veil-xmr': '/api/v2/market/getbysymbol/VEIL_XMR'
-  }
+  },
+  onError: handleErrors
 }));
 
 // Proxy configuration for /api
@@ -22,11 +45,11 @@ app.use('/api', createProxyMiddleware({
   changeOrigin: true,
   timeout: 15000, // set timeout to 15 seconds 
   onProxyRes: (proxyRes, req, res) => {
-    // Add CORS headers to the response
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   },
+  onError: handleErrors
 }));
 
 // Proxy configuration for probit
@@ -35,7 +58,8 @@ app.use('/probit', createProxyMiddleware({
   changeOrigin: true,
   pathRewrite: {
     '^/probit': '/api/exchange/v1'
-  }
+  },
+  onError: handleErrors
 }));
 
 // Proxy configuration for tradeogre
@@ -44,7 +68,8 @@ app.use('/tradeogre', createProxyMiddleware({
   changeOrigin: true,
   pathRewrite: {
     '^/tradeogre': ''
-  }
+  },
+  onError: handleErrors
 }));
 
 // Proxy configuration for coingecko
@@ -56,7 +81,8 @@ app.use('/coingecko', createProxyMiddleware({
   },
   onProxyReq(proxyReq, req, res) {
     proxyReq.path += `?ids=veil&vs_currencies=usd`;
-  }
+  },
+  onError: handleErrors
 }));
 
 // CORS handling for OPTIONS requests
@@ -67,22 +93,32 @@ app.options('*', (req, res) => {
   res.sendStatus(200);
 });
 
-// Proxy server restart logic (every 30 minutes)
-const thirtyMinutes = 30 * 60 * 1000;
-const restartProxy = () => {
-  console.log('Restarting proxy server...');
-  server.close(() => {
-    server.listen(3001, () => {
-      console.log('Proxy server restarted successfully');
-      console.log('Proxy is running again');
+// Middleware to handle 404 errors
+app.use((req, res, next) => {
+  res.status(404).send('Endpoint not found');
+});
+
+// Configure the HTTP server with maxHeadersCount
+const server = http.createServer(app);
+server.maxHeadersCount = 0; // Set maxHeadersCount to 0 to disable the limit
+
+// Function to restart the server
+const restartServer = () => {
+  if (errorOccurred) {
+    console.log('Restarting proxy server due to an error...');
+    server.close(() => {
+      server.listen(3001, () => {
+        console.log('Proxy server restarted successfully');
+        errorOccurred = false; // Reset error flag
+      });
     });
-  });
+  }
 };
 
 // Start the proxy server
-const server = app.listen(3001, () => {
+server.listen(3001, () => {
   console.log('Proxy server listening on port 3001');
 });
 
-// Schedule periodic proxy server restarts
-setInterval(restartProxy, thirtyMinutes);
+// Periodically check for errors and restart the server if needed
+setInterval(restartServer, 30000); // Check every 30 seconds
