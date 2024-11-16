@@ -67,7 +67,7 @@ function App() {
           <div className={`nav-links-container ${isNavVisible ? 'visible' : ''}`}>
             <div className="nav-links-dropdown">
               <h5><a href="https://veil-project.com" target="_blank" rel="noopener noreferrer">Veil Project</a></h5>
-              <h5><a href="https://github.com/Veil-Project/veil/releases" target="_blank" rel="noopener noreferrer">Wallet</a></h5>
+              <h5><a href="https://veilproject.org" target="_blank" rel="noopener noreferrer">Wallet</a></h5>
               <h5><a href="https://veil.tools/" target="_blank" rel="noopener noreferrer">Veil Tools</a></h5>
               <h5><a href="https://explorer.veil-project.com" target="_blank" rel="noopener noreferrer">Explorer</a></h5>
               <h5><a href="https://github.com/steel97/veil_wallet/releases" target="_blank" rel="noopener noreferrer">Light Wallet</a></h5>

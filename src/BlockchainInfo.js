@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
+import rpcCall from './rpcAuth'; // Import the rpcCall function
 
 function BlockchainInfo() {
   const [getblockchaininfo, setgetblockchaininfo] = useState(null);
@@ -12,22 +12,21 @@ function BlockchainInfo() {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios(
-          'http://localhost:3001/api/GetBlockchainInfo',
-        );
+        // Fetch blockchain info using rpcCall
+        const response = await rpcCall("getblockchaininfo");
         console.log(response);
-        const sizeOnDiskGb = formatBytes(response.data.size_on_disk, 2);
+        const sizeOnDiskGb = formatBytes(response.size_on_disk, 2);
         setgetblockchaininfo({
-          difficulty_randomx: response.data.difficulty_randomx,
-          difficulty_progpow: response.data.difficulty_progpow,
-          difficulty_sha256d: response.data.difficulty_sha256d,
-          difficulty_pos: response.data.difficulty_pos,
-          size_on_disk: response.data.size_on_disk,
+          difficulty_randomx: response.difficulty_randomx, // Update with actual fields if different
+          difficulty_progpow: response.difficulty_progpow, // Update with actual fields if different
+          difficulty_sha256d: response.difficulty_sha256d, // Update with actual fields if different
+          difficulty_pos: response.difficulty_pos, // Update with actual fields if different
+          size_on_disk: response.size_on_disk,
           size_on_disk_gb: sizeOnDiskGb
         });
         setError(null); // Reset error state if successful
@@ -36,6 +35,7 @@ function BlockchainInfo() {
         setError(error); // Set error state if there's an error
       }
     };
+
     fetchData();
     const intervalId = setInterval(fetchData, 15000); // Fetch every 15 seconds
 
@@ -84,12 +84,8 @@ function BlockchainInfo() {
            <li><h3><a href="https://fastpool.xyz/veil-rx/" target='_blank' rel="noopener noreferrer">Fastpool (RandomX)</a></h3></li>
          </ul>
        </div>
-      
     ); 
   }
 }
 
 export default BlockchainInfo;
-
-              
-
