@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useState, useEffect } from "react";
+import rpcCall from "./rpcAuth"; // Import the rpcCall function
 
 const BestBlockHash = () => {
   const [blockchainInfo, setBlockchainInfo] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(
-        'http://localhost:3001/api/GetBlockchainInfo/',
-      );
-      console.log(result.data)
-      setBlockchainInfo({ bestblockhash: result.data.bestblockhash });
+      try {
+        // Use the rpcCall function to fetch blockchain info
+        const result = await rpcCall("getblockchaininfo");
+        console.log(result);
+        setBlockchainInfo({ bestblockhash: result.bestblockhash });
+      } catch (error) {
+        console.error("Error fetching best block hash:", error);
+      }
     };
 
     fetchData(); // Initial fetch
@@ -22,13 +26,13 @@ const BestBlockHash = () => {
   return (
     <div className="BestBlockHash">
       {blockchainInfo && (
-        <h3> 
-          Best Block Hash: <br></br>{blockchainInfo.bestblockhash}
+        <h3>
+          Best Block Hash: <br />
+          {blockchainInfo.bestblockhash}
         </h3>
       )}
     </div>
   );
-}; 
+};
 
 export default BestBlockHash;
-

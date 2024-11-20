@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import rpcCall from "./rpcAuth"; // Import the rpcCall function
 
 const AddressBalance = ({ label, address }) => {
   const [balance, setBalance] = useState(null);
@@ -7,21 +7,16 @@ const AddressBalance = ({ label, address }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(
-          `http://localhost:3001/api/GetAddressBalance/${address}`,
-          {
-            headers: {
-              'accept': 'application/json',
-            }
-          }
-        );
-        console.log(`${label} Data received:`, result.data);
+        // Call a method that retrieves the balance for an address
+        // Replace "getaddressbalance" with the actual RPC method for address balance
+        const result = await rpcCall("getaddressbalance", [address]);
+        console.log(`${label} Data received:`, result);
 
-        // Check if the received data is a number
-        if (typeof result.data === 'number') {
-          setBalance(result.data);
+        // Assuming the result is numeric
+        if (typeof result === "number") {
+          setBalance(result);
         } else {
-          console.error(`Invalid data structure for ${label}:`, result.data);
+          console.error(`Invalid data structure for ${label}:`, result);
         }
       } catch (error) {
         console.error(`Error fetching data for ${label}:`, error);
@@ -29,7 +24,7 @@ const AddressBalance = ({ label, address }) => {
     };
 
     fetchData(); // Initial fetch
-    const intervalId = setInterval(fetchData, 86400000); // Fetch once a day?
+    const intervalId = setInterval(fetchData, 86400000); // Fetch once a day
 
     return () => clearInterval(intervalId); // Clean up the interval when the component unmounts
   }, [address, label]);
@@ -40,7 +35,7 @@ const AddressBalance = ({ label, address }) => {
         <div>
           <h3>
             {label} Budget:{" "}
-          </h3> 
+          </h3>
           <h4>
             <span style={{ color: "lightslategrey" }}>{balance} VEIL</span>
           </h4>

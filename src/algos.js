@@ -1,24 +1,37 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import axios from "axios";
+import rpcCall from "./rpcAuth"; // Import the rpcCall function
 
 function BlockchainInfo() {
   const [blockchainInfo, setBlockchainInfo] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios(
-        'https://localhost:3001/api/GetBlockchainInfo',
-      );
-      const data = await response.json();
-      const algorithmStats = data.algorithm_stats;
-      const statsRequests = algorithmStats.map(async (stats) => {
-        const response = await fetch(stats.url);
-        return response.json();
-      });
-      const algorithmData = await Promise.all(statsRequests);
-      setBlockchainInfo({ ...data, algorithms: algorithmData });
+      try {
+        // Fetch blockchain info using rpcCall
+        const data = await rpcCall("getblockchaininfo");
+
+        // Simulating algorithm stats data (if needed)
+        // Replace this logic with the appropriate JSON-RPC calls if available
+        const algorithmStats = data.algorithm_stats || []; 
+        const statsRequests = algorithmStats.map(async (stats) => {
+          try {
+            const response = await rpcCall("getalgorithmstats", [stats.algorithm]);
+            return response;
+          } catch (error) {
+            console.error(`Error fetching stats for ${stats.algorithm}:`, error);
+            return null; // Handle error gracefully
+          }
+        });
+
+        const algorithmData = await Promise.all(statsRequests);
+
+        setBlockchainInfo({ ...data, algorithms: algorithmData });
+      } catch (error) {
+        console.error("Error fetching blockchain info:", error);
+      }
     };
+
     fetchData();
   }, []);
 
@@ -53,11 +66,11 @@ function BlockchainInfo() {
             <React.Fragment key={index}>
               <tr className='table-row'>
                 <td className='table-cell'>{`${stats.algorithm} Difficulty:`}</td>
-                <td className='table-cell'>{algorithms[index].difficulty}</td>
+                <td className='table-cell'>{algorithms[index]?.difficulty}</td>
               </tr>
               <tr className='table-row'>
                 <td className='table-cell'>{`${stats.algorithm} Staking:`}</td>
-                <td className='table-cell'>{algorithms[index].staking}</td>
+                <td className='table-cell'>{algorithms[index]?.staking}</td>
               </tr>
             </React.Fragment>
           ))}

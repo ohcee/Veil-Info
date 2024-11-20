@@ -67,10 +67,10 @@ function App() {
           <div className={`nav-links-container ${isNavVisible ? 'visible' : ''}`}>
             <div className="nav-links-dropdown">
               <h5><a href="https://veil-project.com" target="_blank" rel="noopener noreferrer">Veil Project</a></h5>
-              <h5><a href="https://github.com/Veil-Project/veil/releases" target="_blank" rel="noopener noreferrer">Wallet</a></h5>
+              <h5><a href="https://veilproject.org" target="_blank" rel="noopener noreferrer">Wallet</a></h5>
               <h5><a href="https://veil.tools/" target="_blank" rel="noopener noreferrer">Veil Tools</a></h5>
               <h5><a href="https://explorer.veil-project.com" target="_blank" rel="noopener noreferrer">Explorer</a></h5>
-              <h5><a href="https://github.com/steel97/veil_wallet/releases" target="_blank" rel="noopener noreferrer">Light Wallet</a></h5>
+              <h5><a href="https://veilproject.org" target="_blank" rel="noopener noreferrer">Light Wallet</a></h5>
               <h5><a href="https://discord.veil-project.com" target="_blank" rel="noopener noreferrer">Discord</a></h5>
               <h5><a href="https://t.me/VEILProject" target="_blank" rel="noopener noreferrer">Telegram</a></h5>
               <h5><a href="https://veil.freshdesk.com/support/home" target="_blank" rel="noopener noreferrer">Help Desk</a></h5>
@@ -113,11 +113,11 @@ function App() {
             <h3>The current Block Reward is <p>10 VEIL</p>Until a max supply of <p>300,000,000 VEIL</p>around the year<p>2037</p></h3>
           </div>
         </div>
-        <div className="column">
+        {/*<div className="column">
           <div className="row">
             <SuperBlock />
           </div>
-        </div>
+        </div>*/}
       </div>
 
       <div className="box">
